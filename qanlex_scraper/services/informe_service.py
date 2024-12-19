@@ -47,26 +47,41 @@ def add_or_update_fechas_relevantes(db: Session, informe: Informe, fechas: list)
             .first()
         )
         if not existing_fecha:
-            nueva_fecha = FechaRelevante(
-                expediente=informe.expediente,
-                fecha=fecha["Fecha"],
-                tipo=fecha["Tipo"],
-                detalle=fecha["Detalle"],
-            )
-            informe.fechas_relevantes.append(nueva_fecha)
+            # Verificar que no esté ya en la lista de fechas_relevantes del informe
+            if not any(
+                fr.fecha == fecha["Fecha"]
+                and fr.tipo == fecha["Tipo"]
+                and fr.detalle == fecha["Detalle"]
+                for fr in informe.fechas_relevantes
+            ):
+                nueva_fecha = FechaRelevante(
+                    expediente=informe.expediente,
+                    fecha=fecha["Fecha"],
+                    tipo=fecha["Tipo"],
+                    detalle=fecha["Detalle"],
+                )
+                informe.fechas_relevantes.append(nueva_fecha)
 
 
 def create_new_informe(informe: InformeClass) -> Informe:
     """Crea un nuevo informe con fechas relevantes."""
-    nuevas_fechas = [
-        FechaRelevante(
-            expediente=informe.expediente,
-            fecha=fecha["Fecha"],
-            tipo=fecha["Tipo"],
-            detalle=fecha["Detalle"],
-        )
-        for fecha in informe.fechas_relevantes
-    ]
+    nuevas_fechas = []
+    for fecha in informe.fechas_relevantes:
+        # Verificar que no se repita dentro de la lista
+        if not any(
+            nf.fecha == fecha["Fecha"]
+            and nf.tipo == fecha["Tipo"]
+            and nf.detalle == fecha["Detalle"]
+            for nf in nuevas_fechas
+        ):
+            nuevas_fechas.append(
+                FechaRelevante(
+                    expediente=informe.expediente,
+                    fecha=fecha["Fecha"],
+                    tipo=fecha["Tipo"],
+                    detalle=fecha["Detalle"],
+                )
+            )
     return Informe(
         expediente=informe.expediente,
         jurisdiccion=informe.jurisdiccion,
