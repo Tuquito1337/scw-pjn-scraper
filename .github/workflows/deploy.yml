@@ -1,0 +1,29 @@
+name: Deploy to AWS EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up SSH with PEM
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.EC2_SSH_KEY_PEM }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H "ec2-3-147-237-111.us-east-2.compute.amazonaws.com" >> ~/.ssh/known_hosts
+
+    - name: Deploy code
+      run: |
+        ssh -i ~/.ssh/id_rsa admin@ec2-3-147-237-111.us-east-2.compute.amazonaws.com << 'EOF'
+        cd /home/scw-pjn-scraper
+        sudo git pull origin main
+        sudo sh run_scraper.sh
+        EOF
