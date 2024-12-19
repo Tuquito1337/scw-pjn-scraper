@@ -6,7 +6,7 @@ PATRON_CARATULA = re.compile(
 )
 
 
-# Función para limpiar el texto del demandante
+# Función para limpiar el texto del demandantee
 def limpiar_nombre_demandante(demandante):
     """
     Limpia el nombre del demandante, eliminando detalles innecesarios como 'INCIDENTISTA' y similares.
