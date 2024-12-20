@@ -23,12 +23,19 @@ echo "Activando entorno virtual..."
 source .venv/bin/activate
 
 # Verificar si las dependencias están instaladas
-echo "Verificando dependencias..."
+echo "Instalando dependencias desde requirements.txt..."
 pip install --quiet --upgrade -r requirements.txt
+
+# Instalar Playwright y las dependencias del sistema necesarias
+echo "Instalando Playwright y las dependencias necesarias para Chromium..."
+pip install --quiet playwright
+playwright install chromium
+playwright install-deps
+
 
 # Verificar si el archivo .env está configurado
 if [ ! -f "qanlex_scraper/.env" ]; then
-    echo "¡Advertencia! El archivo .env no se encuentra. Por favor, crea un archivo .env(dentro de la carpeta qanlex_scraper) con las siguientes variables:"
+    echo "¡Advertencia! El archivo .env no se encuentra. Por favor, crea un archivo .env (dentro de la carpeta qanlex_scraper) con las siguientes variables:"
     echo "DATABASE_HOST=localhost"
     echo "DATABASE_PORT=3306"
     echo "DATABASE_USER=root"
