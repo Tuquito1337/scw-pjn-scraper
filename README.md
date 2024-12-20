@@ -1,6 +1,6 @@
 # Proyecto de Scraping para la pagina del Poder Judicial de la Nación
 
-Este proyecto consiste en un scraper automatizado que extrae datos de una fuente específica, resuelve captchas utilizando CapMonster, almacena los datos en una base de datos MySQL y es desplegado y gestionado en AWS. También integra GitHub Actions para despliegue continuo y configura la ejecución en horarios programados.
+Este proyecto consiste en un scraper automatizado que extrae datos de la pagina del Poder Judifical de la Nacion, resuelve captchas utilizando CapMonster, almacena los datos en una base de datos MySQL. También integra GitHub Actions para despliegue continuo.
 
 ## Tabla de Contenidos
 
